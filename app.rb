@@ -2,7 +2,17 @@ require "sinatra"
 require "sinatra/reloader"
 
 get("/") do
-  "<p>Welcome to Omnicalc 3</p>"
+  erb(:home)
 end
 
+get("/umbrella") do
+  erb(:umbrella)
+end
 
+get("/message") do
+  erb(:message)
+end
+
+get("/chat") do
+  erb(:chat)
+end
