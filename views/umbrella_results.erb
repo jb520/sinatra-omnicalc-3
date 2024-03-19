@@ -1,1 +1,17 @@
-<%= @gmaps_data %>
+<h1>Should I take an umbrella?</h1>
+<dl>
+  <dt>User location</dt>
+  <dd><%= @user_location  %></dd>
+  <dt>Latitude</dt>
+  <dd><%= @lati %></dd>
+  <dt>Longitude</dt>
+  <dd><%= @long %></dd>
+  <dt>Current temperature</dt>
+  <dd><%= @temp_now %></dd>
+  <dt>Current summary</dt>
+  <dd><%= @summary %></dd>
+  <dt>Umbrella?</dt>
+  <dd><%= @verdict %></dd>
+</dl>
+
+<a href="/umbrella">Go back</a>
