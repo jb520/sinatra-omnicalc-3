@@ -1,6 +1,7 @@
 require "sinatra"
 require "sinatra/reloader"
 require "http"
+require "sinatra/cookies"
 
 get("/") do
   erb(:home)
@@ -31,7 +32,7 @@ post("/process_umbrella") do
   location_hash = geometry_hash.fetch("location")
   @lati = location_hash.fetch("lat")
   @long = location_hash.fetch("lng")
-  
+
   # weather data
   pirate_weather_key = ENV.fetch("PIRATE_WEATHER_KEY")
   pirate_url = "https://api.pirateweather.net/forecast/#{pirate_weather_key}/#{@lati},#{@long}"
@@ -75,6 +76,33 @@ post("/process_umbrella") do
 end
 
 post("/process_message") do
+  @user_message = params.fetch("user_message")
+
+  request_headers_hash = {
+  "Authorization" => "Bearer #{ENV.fetch("OPENAI_KEY")}",
+  "content-type" => "application/json"
+  }
+
+  request_body_hash = {
+  "model" => "gpt-4",
+  "messages" => [
+    {
+      "role" => "system",
+      "content" => "You are a helpful assistant."
+    },
+    {
+      "role" => "user",
+      "content" => @user_message
+    }
+  ]
+  }
+
+  request_body_json = JSON.generate(request_body_hash)
+  raw_response = HTTP.headers(request_headers_hash).post("https://api.openai.com/v1/chat/completions",:body => request_body_json).to_s
+  @parsed_response = JSON.parse(raw_response)
+
+  
+
   erb(:process_message)
 end
 
