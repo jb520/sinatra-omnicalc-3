@@ -99,11 +99,11 @@ post("/process_message") do
 
   request_body_json = JSON.generate(request_body_hash)
   raw_response = HTTP.headers(request_headers_hash).post("https://api.openai.com/v1/chat/completions",:body => request_body_json).to_s
-  parsed_response = JSON.parse(raw_response)
+  @parsed_response = JSON.parse(raw_response)
 
-  choices_arr = parsed_response.fetch("choices")
+  choices_arr = @parsed_response.fetch("choices")
   message_hash = choices_arr.at(1)
-  @response = message_hash.fetch("content")
+  #@response = message_hash.fetch("content")
   
 
   erb(:process_message)
